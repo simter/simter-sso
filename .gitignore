@@ -1,0 +1,26 @@
+build
+bin
+out
+target
+Thumbs.db
+
+.metadata
+.settings
+.classpath
+.project
+*.pdb
+*.log
+*.log.*
+.bpmn
+.DS_Store
+
+*.iml
+.idea
+
+# gradle
+.gradle
+gradle
+gradlew
+gradlew.bat
+gradle-app.setting
+repos

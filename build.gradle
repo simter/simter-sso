@@ -1,0 +1,121 @@
+import java.text.SimpleDateFormat
+description = "Simter SSO"
+
+// 所有项目的配置
+allprojects {
+    group = "org.simter"
+
+    ext{
+        // nexus 中央仓库的地址
+        nexusUrl = "http://192.168.0.222:8081/nexus/content/groups/public/"
+
+        // 依赖包的版本
+        slf4jVersion = "1.7.7"
+        logbackVersion = "1.1.2"
+        springVersion = "4.1.4.RELEASE"
+        junitVersion = "4.12"
+        servletVersion = "3.1.0"
+    }
+
+    // 仓库配置
+    repositories {
+        //mavenLocal()
+        maven {url "$nexusUrl"} 
+        //jcenter()
+        //mavenCentral()
+    }
+}
+
+// 所有子项目的配置
+subprojects {
+    apply plugin: "java"
+    apply plugin: "maven"
+
+    // 编译配置
+    compileJava{
+        options.encoding = "UTF-8"
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
+    }
+    compileTestJava{
+        options.encoding = "UTF-8"
+        sourceCompatibility = 1.7
+        targetCompatibility = 1.7
+    }
+
+    // 全局的包依赖
+    configurations {
+        // 排除的 jar
+        compile.exclude module: "commons-logging"
+        compile.exclude module: "log4j"
+    }
+    dependencies {
+        // log
+        compile "org.slf4j:slf4j-api:${slf4jVersion}"
+
+        // test
+        testCompile "junit:junit:${junitVersion}"
+        testRuntime "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
+        testRuntime "org.slf4j:log4j-over-slf4j:${slf4jVersion}"
+        testRuntime "ch.qos.logback:logback-classic:${logbackVersion}"
+    }
+
+    // 初始化项目目录结构
+    task initDirs << {
+        // jar project
+        sourceSets*.java.srcDirs*.each { it.mkdirs() }
+        sourceSets*.resources.srcDirs*.each { it.mkdirs()}
+
+        // war project
+        if (project.plugins.hasPlugin("war")){
+          def webAppDir = file("$webAppDirName")
+          webAppDir.mkdirs()
+        }
+    }
+
+    // 列出编译时依赖的 jar
+    task listCompileJars << {
+        configurations.compile.each { File file -> println file.name }
+    }
+    // 列出运行时依赖的 jar
+    task listRuntimeJars << {
+        configurations.runtime.each { File file -> println file.name }
+    }
+    // 列出测试编译时依赖的 jar
+    task listTestCompileJars << {
+        configurations.testCompile.each { File file -> println file.name }
+    }
+    // 列出测试运行时依赖的 jar
+    task listTestRuntimeJars << {
+        configurations.testRuntime.each { File file -> println file.name }
+    }
+}
+
+project(":simter-sso-client") {
+    description = "Simter SSO Client"
+    jar {
+        manifest.attributes["Created-Time"] = "${buildTime()}"
+        manifest.attributes["Created-By"] = "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
+        manifest.attributes["Implementation-Title"] = project.description
+        manifest.attributes["Implementation-Version"] = project.version
+    }
+}
+
+project(":simter-sso-server"){
+    description = "Simter SSO Server"
+    apply plugin: "war"
+    apply from: "${rootDir}/gretty.plugin"
+    war {
+        manifest.attributes["Created-Time"] = "${buildTime()}"
+        manifest.attributes["Created-By"] = "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
+        manifest.attributes["Implementation-Title"] = project.description
+        manifest.attributes["Implementation-Version"] = project.version
+    }
+}
+
+// 获取当前时间
+def buildTime() {
+    def df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    //df.setTimeZone(TimeZone.getTimeZone("UTC"))
+    return df.format(new Date())
+}
