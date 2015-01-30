@@ -3,7 +3,7 @@ buildscript {
     mavenLocal()
     maven {url "$nexusUrl"}
     jcenter()
-    //mavenCentral()
+    mavenCentral()
   }
   
   dependencies {
