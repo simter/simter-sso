@@ -20,7 +20,6 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("contextPath={}, url={}", req.getContextPath(), req.getRequestURI());
         req.getRequestDispatcher("/simter/sso/login.jsp").forward(req, resp);
     }
 
