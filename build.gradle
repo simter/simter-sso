@@ -67,7 +67,6 @@ subprojects {
     dependencies {
         // log
         compile "org.slf4j:slf4j-api:${slf4jVersion}"
-        compile "commons-beanutils:commons-beanutils:1.8.1"
 
         // test
         testCompile "junit:junit:${junitVersion}"

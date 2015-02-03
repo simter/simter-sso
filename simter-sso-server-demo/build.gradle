@@ -1,6 +1,6 @@
 gretty {
   httpPort = 8081
-  contextPath = "go"
+  contextPath = ""
   servletContainer = "jetty9" // jetty9, jetty8, jetty7, tomcat8, tomcat1
 }
 
