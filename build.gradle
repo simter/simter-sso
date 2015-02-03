@@ -5,10 +5,7 @@ description = "Simter SSO"
 allprojects {
     group = "org.simter"
 
-    ext{
-        // nexus 中央仓库的地址
-        nexusUrl = "http://192.168.0.222:8081/nexus/content/groups/public/"
-
+    ext {
         // 依赖包的版本
         groovyVersion = "2.4.0"
         slf4jVersion = "1.7.7"
@@ -18,10 +15,27 @@ allprojects {
         servletVersion = "3.1.0"
     }
 
+    // 加载本地开发的一些特殊属性变量：如定义 nexus 的仓库地址
+    def localConfigFile = file('local.properties')
+    if (localConfigFile.exists()) {
+        def props = new Properties()
+        localConfigFile.withInputStream { stream -> props.load(stream) }
+        props.each {key, value -> 
+             ext[key] = value
+        }
+    }
+
     // 仓库配置
     repositories {
         mavenLocal()
-        maven {url "$nexusUrl"} 
+
+        // nexus 仓库
+        if (project.hasProperty('nexusUrl')) {
+            maven {url nexusUrl} 
+        } else {
+            println 'build.gradle.allprojects.repositories: property nexusUrl is optional'
+        }
+
         jcenter()
         mavenCentral()
     }
@@ -53,6 +67,7 @@ subprojects {
     dependencies {
         // log
         compile "org.slf4j:slf4j-api:${slf4jVersion}"
+        compile "commons-beanutils:commons-beanutils:1.8.1"
 
         // test
         testCompile "junit:junit:${junitVersion}"
@@ -75,23 +90,6 @@ subprojects {
           webAppDir.mkdirs()
         }
     }
-
-    // 列出编译时依赖的 jar
-    task listCompileJars << {
-        configurations.compile.each { File file -> println file.name }
-    }
-    // 列出运行时依赖的 jar
-    task listRuntimeJars << {
-        configurations.runtime.each { File file -> println file.name }
-    }
-    // 列出测试编译时依赖的 jar
-    task listTestCompileJars << {
-        configurations.testCompile.each { File file -> println file.name }
-    }
-    // 列出测试运行时依赖的 jar
-    task listTestRuntimeJars << {
-        configurations.testRuntime.each { File file -> println file.name }
-    }
 }
 
 project(":simter-sso-client") {
@@ -106,6 +104,16 @@ project(":simter-sso-client") {
 
 project(":simter-sso-server"){
     description = "Simter SSO Server"
+    jar {
+        manifest.attributes["Created-Time"] = "${buildTime()}"
+        manifest.attributes["Created-By"] = "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
+        manifest.attributes["Implementation-Title"] = project.description
+        manifest.attributes["Implementation-Version"] = project.version
+    }
+}
+
+project(":simter-sso-server-demo"){
+    description = "Simter SSO Server Demo"
     apply plugin: "war"
     apply from: "${rootDir}/gretty.plugin"
     war {

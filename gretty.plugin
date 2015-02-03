@@ -1,7 +1,14 @@
 buildscript {
   repositories {
     mavenLocal()
-    maven {url "$nexusUrl"}
+
+    // nexus 仓库
+    if (project.hasProperty('nexusUrl')) {
+        maven {url nexusUrl} 
+    } else {
+        println 'gretty.plugin.buildscript.repositories: property nexusUrl is optional'
+    }
+
     jcenter()
     mavenCentral()
   }
@@ -13,9 +20,16 @@ buildscript {
 
 repositories {
     mavenLocal()
-    maven {url "$nexusUrl"}
+    
+    // nexus 仓库
+    if (project.hasProperty('nexusUrl')) {
+        maven {url nexusUrl} 
+    } else {
+        println 'gretty.plugin.repositories: property nexusUrl is optional'
+    }
+
     jcenter()
-    //mavenCentral()
+    mavenCentral()
 }
 
 if (!project.plugins.findPlugin(org.akhikhl.gretty.GrettyPlugin))

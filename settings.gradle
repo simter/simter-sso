@@ -2,3 +2,4 @@ rootProject.name = "simter-sso"
 
 include "simter-sso-client"
 include "simter-sso-server"
+include "simter-sso-server-demo"

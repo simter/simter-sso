@@ -24,3 +24,4 @@ gradlew
 gradlew.bat
 gradle-app.setting
 repos
+local.properties

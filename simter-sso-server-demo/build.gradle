@@ -1,0 +1,19 @@
+gretty {
+  httpPort = 8081
+  contextPath = ""
+  servletContainer = "jetty9" // jetty9, jetty8, jetty7, tomcat8, tomcat1
+}
+
+dependencies {
+    // project
+    compile project(":simter-sso-server")
+
+    // web
+    providedCompile "javax.servlet:javax.servlet-api:${servletVersion}"
+
+    // logback
+    runtime "ch.qos.logback:logback-classic:${logbackVersion}"
+    runtime "org.codehaus.groovy:groovy:${groovyVersion}"
+    runtime "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
+    runtime "org.slf4j:log4j-over-slf4j:${slf4jVersion}"
+}
