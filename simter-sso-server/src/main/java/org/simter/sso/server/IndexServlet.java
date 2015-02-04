@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 主页
  * Created by dragon on 2015/1/30.
  */
 @WebServlet("/simter/sso/index")

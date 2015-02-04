@@ -5,8 +5,14 @@
     <title>SSO 主页</title>
 </head>
 <body>
+<div>
 帐号: ${sessionScope.account}<br>
 时间: ${sessionScope.ticketTime}<br>
-票据: ${sessionScope.ticket}
+票据: ${sessionScope.ticket}<br>
+ SID: ${pageContext.session.id}
+</div>
+<form action="${pageContext.request.contextPath}/simter/sso/logout" method="post">
+    <input type="submit" value="注销">
+</form>
 </body>
 </html>

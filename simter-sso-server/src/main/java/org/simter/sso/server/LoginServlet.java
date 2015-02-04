@@ -1,8 +1,5 @@
 package org.simter.sso.server;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,15 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
+ * 登录
  * Created by dragon on 2015/1/30.
  */
 @WebServlet("/simter/sso/login")
 public class LoginServlet extends HttpServlet {
-    private static Logger logger = LoggerFactory.getLogger(LoginServlet.class);
+    //private static Logger logger = LoggerFactory.getLogger(LoginServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
