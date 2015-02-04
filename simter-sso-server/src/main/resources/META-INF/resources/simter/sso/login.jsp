@@ -4,8 +4,12 @@
     <title>SSO登录</title>
 </head>
 <body>
-<input type="text" name="account" placeholder="帐号">
-<input type="text" name="password" placeholder="密码">
-<input type="submit" name="login" value="登录">
+<form action="simter/sso/login" method="post">
+    <input type="text" name="account" placeholder="帐号" required value="<%= request.getAttribute("account") %>">
+    <input type="text" name="password" placeholder="密码" required value="<%= request.getAttribute("password") %>">
+    <input type="submit" name="login" value="登录">
+    <input type="hidden" name="origin"
+           value="<%= request.getParameter("origin") != null ? request.getParameter("origin") : request.getAttribute("origin") %>">
+</form>
 </body>
 </html>

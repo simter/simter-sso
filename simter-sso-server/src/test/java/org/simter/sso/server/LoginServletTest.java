@@ -28,19 +28,18 @@ public class LoginServletTest {
     }
 
     @Test
-    public void loginPage() throws ServletException, IOException {
+    public void doGetWithNoLogin() throws ServletException, IOException {
         request.addParameter("account", "me");
         request.addParameter("password", "111111");
         servlet.doGet(request, response);
-        assertThat("/simter/sso/login.jsp", equalTo(response.getForwardedUrl()));
+        assertThat(response.getForwardedUrl(), equalTo("/simter/sso/login.jsp"));
     }
 
     @Test
-    public void loginFailed() throws ServletException, IOException {
-        request.addParameter("account", "test");
-        request.addParameter("password", "111111");
-        servlet.doPost(request, response);
-        assertThat(response.getContentAsString(), equalTo("false"));
+    public void doGetWithLogined() throws ServletException, IOException {
+        loginSuccess();
+        servlet.doGet(request, response);
+        assertThat(response.getForwardedUrl(), equalTo("/simter/sso/index"));
     }
 
     @Test
@@ -48,6 +47,14 @@ public class LoginServletTest {
         request.addParameter("account", "test");
         request.addParameter("password", "888888");
         servlet.doPost(request, response);
-        assertThat(response.getContentAsString(), equalTo("true"));
+        assertThat(response.getForwardedUrl(), equalTo("/simter/sso/index"));
+    }
+
+    @Test
+    public void loginFailed() throws ServletException, IOException {
+        request.addParameter("account", "test");
+        request.addParameter("password", "111111");
+        servlet.doPost(request, response);
+        assertThat(response.getForwardedUrl(), equalTo("/simter/sso/login.jsp"));
     }
 }

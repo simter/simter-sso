@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Writer;
 
 /**
  * Created by dragon on 2015/1/30.
@@ -20,18 +19,63 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/simter/sso/login.jsp").forward(req, resp);
+        if (this.hasLogin(req)) {// 已经登录的处理
+            this.gotoSuccessPage(req, resp);
+        } else {  // 未登录，返回登录页面
+            req.getRequestDispatcher("/simter/sso/login.jsp").forward(req, resp);
+        }
+    }
+
+    private void gotoSuccessPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String origin = req.getParameter("origin");
+        if (origin == null || origin.isEmpty()) {// 无参数 origin，返回 SSO 主页
+            req.getRequestDispatcher("/simter/sso/index").forward(req, resp);
+        } else {  // 有参数 origin，则附带 ticket 参数跳转到 src 页面
+            String ticket = this.getTicket(req);
+            if (ticket == null || ticket.isEmpty())
+                throw new ServletException("no ticket");
+            origin = this.addParameter(origin, "ticket", ticket);
+            resp.sendRedirect(origin);
+        }
+    }
+
+    // 判断当前会话是否已经处于登录状态
+    private boolean hasLogin(HttpServletRequest req) {
+        String ticket = (String) req.getSession().getAttribute("ticket");
+        return ticket != null;
+    }
+
+    // 获取已登录的 ticket 信息
+    private String getTicket(HttpServletRequest req) {
+        // TODO
+        return req.getSession().getId();
+    }
+
+    // 在 url 后附加指定的 请求参数
+    private String addParameter(String src, String name, String value) {
+        return (src.indexOf("?") == -1 ? src + "?" : src + "&") + name + "=" + value;
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        boolean ok = this.validate(req);
+        if (ok) {// 登录成功返回
+            this.gotoSuccessPage(req, resp);
+        } else { // 登录失败返回登录页面
+            req.setAttribute("error", "登录失败"); // TODO
+            req.getRequestDispatcher("/simter/sso/login.jsp").forward(req, resp);
+        }
+    }
+
+    private boolean validate(HttpServletRequest req) {
         String account = req.getParameter("account");
         String password = req.getParameter("password");
-        Writer writer = resp.getWriter();
-        if(account.equals("test") && password.equals("888888")){
-            writer.write("true");
-        }else{
-            writer.write("false");
+        // TODO
+        if (account.equals("test") && password.equals("888888")) {
+            req.getSession().setAttribute("ticket", getTicket(req));
+            return true;
+        } else {
+            return false;
         }
     }
 }
