@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by dragon on 2015/1/30.
@@ -29,7 +32,7 @@ public class LoginServlet extends HttpServlet {
     private void gotoSuccessPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String origin = req.getParameter("origin");
         if (origin == null || origin.isEmpty()) {// 无参数 origin，返回 SSO 主页
-            req.getRequestDispatcher("/simter/sso/index").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/simter/sso/index");
         } else {  // 有参数 origin，则附带 ticket 参数跳转到 src 页面
             String ticket = this.getTicket(req);
             if (ticket == null || ticket.isEmpty())
@@ -62,7 +65,7 @@ public class LoginServlet extends HttpServlet {
         if (ok) {// 登录成功返回
             this.gotoSuccessPage(req, resp);
         } else { // 登录失败返回登录页面
-            req.setAttribute("error", "登录失败"); // TODO
+            req.setAttribute("msg", "登录失败"); // TODO
             req.getRequestDispatcher("/simter/sso/login.jsp").forward(req, resp);
         }
     }
@@ -72,7 +75,10 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
         // TODO
         if (account.equals("test") && password.equals("888888")) {
+            // 生成并记录登录票据
+            req.getSession().setAttribute("account", account);
             req.getSession().setAttribute("ticket", getTicket(req));
+            req.getSession().setAttribute("ticketTime", new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date()));
             return true;
         } else {
             return false;

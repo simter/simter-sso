@@ -3,7 +3,7 @@ Simter Single-Sign-On Implement
 
 ## Run Demo
 `$ gradle appRun`<br/>
-Then open [http://localhost:8081/](http://localhost:8081/)
+Then open [http://localhost:8081/simter/sso/login](http://localhost:8081/simter/sso/login)
 
 ## Request
 [Java Servlet 3.1][]

@@ -13,6 +13,8 @@ allprojects {
         springVersion = "4.1.4.RELEASE"
         junitVersion = "4.12"
         servletVersion = "3.1.0"
+        jspVersion = "2.3.1"
+        jstlVersion = "1.2"
     }
 
     // 加载本地开发的一些特殊属性变量：如定义 nexus 的仓库地址

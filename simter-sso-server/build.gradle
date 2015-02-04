@@ -4,6 +4,8 @@ dependencies {
 
     // web
     compile "javax.servlet:javax.servlet-api:${servletVersion}"
+    compile "jstl:jstl:$jstlVersion"
+    compile "javax.servlet.jsp:javax.servlet.jsp-api:$jspVersion"
 
     // spring
     // compile "org.springframework:spring-context:${springVersion}"

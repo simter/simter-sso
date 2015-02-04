@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 将 metadata-complete 设为 false 或不设置，servlet3的注解类方有效 -->
+<web-app
+		xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+		metadata-complete="false"
+		version="3.1">
+    <welcome-file-list>
+        <welcome-file>simter/sso/login</welcome-file>
+    </welcome-file-list>
+	<session-config>
+		<!-- session超时设置，设为不大于0的数将永远不过时，单位为分钟 -->
+		<session-timeout>60</session-timeout>
+	</session-config>
+</web-app>
