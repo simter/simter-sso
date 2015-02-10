@@ -1,7 +1,8 @@
 gretty {
   httpPort = 8081
   contextPath = ""
-  servletContainer = "jetty9" // jetty9, jetty8, jetty7, tomcat8, tomcat1
+  servletContainer = "jetty9" // jetty9, jetty8, jetty7, tomcat8, tomcat7
+  scanInterval = 2
 }
 
 dependencies {

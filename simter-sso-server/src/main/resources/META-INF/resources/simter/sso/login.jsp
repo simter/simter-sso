@@ -9,7 +9,7 @@
 <body>
 <form action="${pageContext.request.contextPath}/simter/sso/login" method="post">
     <input type="text" name="account" placeholder="帐号" required value="${param.account}" autofocus>
-    <input type="text" name="password" placeholder="密码" required value="${param.password}">
+    <input type="password" name="password" placeholder="密码" required value="${param.password}">
     <input type="submit" name="login" value="登录">
     <input type="hidden" name="origin" value="${param.origin}">
     <div style="color: red">${msg}</div>

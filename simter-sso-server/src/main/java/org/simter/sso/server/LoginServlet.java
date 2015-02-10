@@ -1,5 +1,8 @@
 package org.simter.sso.server;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,10 +18,12 @@ import java.util.Date;
  */
 @WebServlet("/simter/sso/login")
 public class LoginServlet extends HttpServlet {
-    //private static Logger logger = LoggerFactory.getLogger(LoginServlet.class);
+    private static Logger logger = LoggerFactory.getLogger(LoginServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.debug("request.contextPath={}", req.getContextPath());
+        logger.debug("request.servletContext.contextPath={}", req.getServletContext().getContextPath());
         if (this.hasLogin(req)) {// 已经登录的处理
             this.gotoSuccessPage(req, resp);
         } else {  // 未登录，返回登录页面
