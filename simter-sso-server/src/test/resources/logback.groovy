@@ -34,4 +34,4 @@ appender("rollingFile", RollingFileAppender) {
 root(WARN, ["console", "rollingFile"])
 
 // 自定义日志级别
-logger("org.simter", INFO)
+logger("org.simter", DEBUG)

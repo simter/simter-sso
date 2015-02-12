@@ -6,7 +6,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import javax.servlet.ServletException;
-import javax.servlet.jsp.PageContext;
 import java.io.IOException;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -38,9 +37,9 @@ public class LoginServletTest {
 
     @Test
     public void doGetWithLogined() throws ServletException, IOException {
-        loginSuccess();
+        request.getSession().setAttribute("ticket", "the ticket");
         servlet.doGet(request, response);
-        assertThat(response.getForwardedUrl(), equalTo("/simter/sso/index"));
+        assertThat(response.getHeader("Location"), equalTo("/simter/sso/index"));
     }
 
     @Test
@@ -48,7 +47,7 @@ public class LoginServletTest {
         request.addParameter("account", "test");
         request.addParameter("password", "888888");
         servlet.doPost(request, response);
-        assertThat(response.getForwardedUrl(), equalTo("/simter/sso/index"));
+        assertThat(response.getHeader("Location"), equalTo("/simter/sso/index"));
     }
 
     @Test
