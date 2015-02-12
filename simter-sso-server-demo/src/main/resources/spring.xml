@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 启用spring的注释驱动设置：
+        对标注有 @Autowired 的 Bean 进行自动注入 如果声明了@Autowired又没有定义相应的可注入bean，
+        将抛异常，除非设置@Autowired(required = false)； 如果匹配的类型bean超过一个，也会抛异常，
+        这时可以用@Qualifier("beanName") 代替@Autowired来避免此类问题 -->
+    <context:annotation-config/>
+
+    <!-- 如果直接在类上使用了@Component配置，该bean需要下面的语句才能告知spring对其进行自动管理，
+        这种方式bean的作用范围通过@Scope来配置。下面的语法通过base-package指定扫描的包，也可以指定正则表达式进行过滤。
+        最好在持久层、业务层和控制层分别采用 @Repository、@Service 和 @Controller 对分层中的类进行注释，
+        而用 @Component 对那些比较中立的类进行注释。 -->
+    <context:component-scan base-package="org.simter"/>
+
+    <!-- 数据库 -->
+    <import resource="classpath:spring-db.xml"/>
+</beans>

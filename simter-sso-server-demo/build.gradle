@@ -9,8 +9,16 @@ dependencies {
     // project
     compile project(":simter-sso-server")
 
+    // spring
+    compile "org.springframework:spring-context:${springVersion}"
+    compile "org.springframework:spring-tx:${springVersion}"
+    compile "org.springframework:spring-web:${springVersion}"
+
     // web
     providedCompile "javax.servlet:javax.servlet-api:${servletVersion}"
+
+    // database
+    providedCompile "org.postgresql:postgresql:${postgresVersion}"
 
     // logback
     runtime "ch.qos.logback:logback-classic:${logbackVersion}"
