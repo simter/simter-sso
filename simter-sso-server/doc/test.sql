@@ -7,7 +7,7 @@ from (
 	inner join ST_SSO_AUTH t on t.pid = a.id
 	where a.status_ = 1
 	and (
-		a.code_ = 'admin@simter.org1' 
+		a.code_ = 'admin@simter.org' 
 		or exists (select 0 from ST_SSO_BIND b where b.pid = a.id and b.code_ = 'admin@simter.org1')
 	)
 ) t;
