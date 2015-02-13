@@ -2,6 +2,12 @@ dependencies {
     // project
     compile project(":simter-sso-client")
 
+    // spring
+    compile "org.springframework:spring-jdbc:${springVersion}"
+    compile "org.springframework:spring-context:${springVersion}"
+    compile "org.springframework:spring-tx:${springVersion}"
+    compile "org.springframework:spring-web:${springVersion}"
+
     // web
     compile "javax.servlet:javax.servlet-api:${servletVersion}"
     compile "jstl:jstl:$jstlVersion"

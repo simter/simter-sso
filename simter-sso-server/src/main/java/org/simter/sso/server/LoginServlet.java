@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,8 +16,15 @@ import java.util.Date;
  * Created by dragon on 2015/1/30.
  */
 @WebServlet("/simter/sso/login")
-public class LoginServlet extends HttpServlet {
+public class LoginServlet extends BaseServlet {
     private static Logger logger = LoggerFactory.getLogger(LoginServlet.class);
+    private LoginService loginService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        loginService = context.getBean(LoginService.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -76,7 +82,8 @@ public class LoginServlet extends HttpServlet {
         String account = req.getParameter("account");
         String password = req.getParameter("password");
         // TODO
-        if (account.equals("test") && password.equals("888888")) {
+        boolean ok = this.loginService.login(account, password);
+        if (ok) {
             // 生成并记录登录票据
             req.getSession().setAttribute("account", account);
             req.getSession().setAttribute("ticket", getTicket(req));
